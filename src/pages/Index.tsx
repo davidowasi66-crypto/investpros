@@ -22,21 +22,21 @@ const Index = () => {
               <div className="md:w-1/2 mb-12 md:mb-0">
                 <div className="animate-fade-in">
                   <span className="font-handwritten text-lg text-blue-600 bg-blue-100 px-4 py-1 rounded-full inline-block mb-4">High Yield Investment Platform</span>
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
                     Grow Your <span className="text-blue-600">Wealth</span> with Confidence
                   </h1>
-                  <p className="text-xl text-gray-600 mb-8">
+                  <p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed">
                     Our platform offers secure, high-yield investment opportunities tailored to your portfolio needs across multiple asset classes.
                   </p>
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <Link to="/plans">
-                      <HandDrawnButton variant="outline" className="px-8 py-4 text-lg">
+                  <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                    <Link to="/plans" className="w-full sm:w-auto">
+                      <HandDrawnButton variant="outline" className="w-full sm:w-auto px-6 sm:px-8 py-4 text-base sm:text-lg touch-target">
                         View Plans
                       </HandDrawnButton>
                     </Link>
-                    <Link to="/register">
-                      <HandDrawnButton variant="primary" className="px-8 py-4 text-lg">
-                        Get Started <ArrowRight className="ml-2 inline-block h-5 w-5" />
+                    <Link to="/register" className="w-full sm:w-auto">
+                      <HandDrawnButton variant="primary" className="w-full sm:w-auto px-6 sm:px-8 py-4 text-base sm:text-lg touch-target">
+                        Get Started <ArrowRight className="ml-2 inline-block h-4 w-4 sm:h-5 sm:w-5" />
                       </HandDrawnButton>
                     </Link>
                   </div>
@@ -77,13 +77,13 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <span className="font-handwritten text-lg text-blue-600 bg-blue-100 px-4 py-1 rounded-full inline-block mb-4">Why Choose Us</span>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Features Designed for Smart Investors</h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Features Designed for Smart Investors</h2>
+              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                 Our platform combines security, transparency, and high returns to provide you with the best investment experience across traditional and alternative assets.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               <FeatureCard
                 title="High Security"
                 description="Advanced encryption and multi-factor authentication to keep your assets safe"
@@ -113,13 +113,13 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <span className="font-handwritten text-lg text-blue-600 bg-blue-100 px-4 py-1 rounded-full inline-block mb-4">Investment Plans</span>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Choose Your Investment Strategy</h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Choose Your Investment Strategy</h2>
+              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                 From conservative to aggressive growth, we have plans that match your investment goals.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12">
               <InvestmentPlanCard
                 title="Starter"
                 percentage={5}
@@ -176,8 +176,8 @@ const Index = () => {
         <section className="py-16 bg-blue-50">
           <div className="container mx-auto px-4">
             <HandDrawnContainer className="max-w-4xl mx-auto p-8 md:p-12 bg-white text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Grow Your Wealth?</h2>
-              <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Ready to Grow Your Wealth?</h2>
+              <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
                 Join thousands of investors who trust our platform for secure and high-yield investment opportunities.
               </p>
               <Link to="/register">

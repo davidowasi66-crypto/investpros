@@ -37,8 +37,8 @@ const InvestmentPlans = () => {
         <section className="py-16 bg-blue-50">
           <div className="container mx-auto px-4 text-center">
             <span className="font-handwritten text-lg text-blue-600 bg-blue-100 px-4 py-1 rounded-full inline-block mb-4">Investment Opportunities</span>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Choose Your Perfect Investment Plan</h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">Choose Your Perfect Investment Plan</h1>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
               We offer diversified investment plans across stocks, bonds, real estate, and commodities designed to match different risk tolerances, timeframes, and financial goals.
             </p>
           </div>
@@ -47,9 +47,9 @@ const InvestmentPlans = () => {
         {/* Main Plans Section */}
         <section className="py-16">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8 text-center">Featured Plans</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Featured Plans</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-12 sm:mb-16">
               <InvestmentPlanCard
                 title="Conservative"
                 percentage={5}
@@ -92,9 +92,9 @@ const InvestmentPlans = () => {
               />
             </div>
 
-            <h2 className="text-3xl font-bold mb-8 text-center">Specialized Plans</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Specialized Plans</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               <InvestmentPlanCard
                 title="Long-Term Growth"
                 percentage={40}
@@ -141,54 +141,55 @@ const InvestmentPlans = () => {
         {/* Comparison Table */}
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8 text-center">Plan Comparison</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Plan Comparison</h2>
             
-            <HandDrawnContainer className="overflow-x-auto">
-              <table className="w-full border-collapse">
+            <HandDrawnContainer className="overflow-x-auto responsive-table">
+              <table className="w-full border-collapse min-w-full"
+                     style={{ minWidth: '640px' }}>
                 <thead>
                   <tr className="bg-blue-50">
-                    <th className="border-2 border-black p-4 text-left">Feature</th>
-                    <th className="border-2 border-black p-4 text-center">Conservative</th>
-                    <th className="border-2 border-black p-4 text-center">Balanced</th>
-                    <th className="border-2 border-black p-4 text-center">Aggressive</th>
+                    <th className="border-2 border-black p-2 sm:p-4 text-left text-sm sm:text-base">Feature</th>
+                    <th className="border-2 border-black p-2 sm:p-4 text-center text-sm sm:text-base">Conservative</th>
+                    <th className="border-2 border-black p-2 sm:p-4 text-center text-sm sm:text-base">Balanced</th>
+                    <th className="border-2 border-black p-2 sm:p-4 text-center text-sm sm:text-base">Aggressive</th>
                   </tr>
                 </thead>
-                <tbody className="font-medium">
+                <tbody className="font-medium text-sm sm:text-base">
                   <tr>
-                    <td className="border-2 border-black p-4">Minimum Investment</td>
-                    <td className="border-2 border-black p-4 text-center">$100</td>
-                    <td className="border-2 border-black p-4 text-center">$500</td>
-                    <td className="border-2 border-black p-4 text-center">$2000</td>
+                    <td className="border-2 border-black p-2 sm:p-4">Minimum Investment</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">$100</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">$500</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">$2000</td>
                   </tr>
                   <tr>
-                    <td className="border-2 border-black p-4">Weekly Returns</td>
-                    <td className="border-2 border-black p-4 text-center">5%</td>
-                    <td className="border-2 border-black p-4 text-center">12%</td>
-                    <td className="border-2 border-black p-4 text-center">20%</td>
+                    <td className="border-2 border-black p-2 sm:p-4">Weekly Returns</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">5%</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">12%</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">20%</td>
                   </tr>
                   <tr>
-                    <td className="border-2 border-black p-4">Contract Duration</td>
-                    <td className="border-2 border-black p-4 text-center">30 days</td>
-                    <td className="border-2 border-black p-4 text-center">60 days</td>
-                    <td className="border-2 border-black p-4 text-center">90 days</td>
+                    <td className="border-2 border-black p-2 sm:p-4">Contract Duration</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">30 days</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">60 days</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">90 days</td>
                   </tr>
                   <tr>
-                    <td className="border-2 border-black p-4">Early Withdrawal Fee</td>
-                    <td className="border-2 border-black p-4 text-center">None</td>
-                    <td className="border-2 border-black p-4 text-center">5%</td>
-                    <td className="border-2 border-black p-4 text-center">10%</td>
+                    <td className="border-2 border-black p-2 sm:p-4">Early Withdrawal Fee</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">None</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">5%</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">10%</td>
                   </tr>
                   <tr>
-                    <td className="border-2 border-black p-4">Support Level</td>
-                    <td className="border-2 border-black p-4 text-center">Standard</td>
-                    <td className="border-2 border-black p-4 text-center">Priority</td>
-                    <td className="border-2 border-black p-4 text-center">VIP</td>
+                    <td className="border-2 border-black p-2 sm:p-4">Support Level</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">Standard</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">Priority</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">VIP</td>
                   </tr>
                   <tr>
-                    <td className="border-2 border-black p-4">Referral Bonus</td>
-                    <td className="border-2 border-black p-4 text-center">1%</td>
-                    <td className="border-2 border-black p-4 text-center">3%</td>
-                    <td className="border-2 border-black p-4 text-center">5%</td>
+                    <td className="border-2 border-black p-2 sm:p-4">Referral Bonus</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">1%</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">3%</td>
+                    <td className="border-2 border-black p-2 sm:p-4 text-center">5%</td>
                   </tr>
                 </tbody>
               </table>
@@ -200,8 +201,8 @@ const InvestmentPlans = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4">Frequently Asked Questions</h2>
+              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
                 Got questions about our investment plans? We've got you covered.
               </p>
             </div>
@@ -227,8 +228,8 @@ const InvestmentPlans = () => {
         {/* CTA Section */}
         <section className="py-16 bg-blue-50">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">Ready to Start Investing?</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4">Ready to Start Investing?</h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
               Create an account today and start growing your wealth with our proven investment strategies across multiple asset classes.
             </p>
             <Link to="/register">
