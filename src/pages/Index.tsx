@@ -21,12 +21,12 @@ const Index = () => {
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/2 mb-12 md:mb-0">
                 <div className="animate-fade-in">
-                  <span className="font-handwritten text-lg text-blue-600 bg-blue-100 px-4 py-1 rounded-full inline-block mb-4">High Yield Crypto Investments</span>
+                  <span className="font-handwritten text-lg text-blue-600 bg-blue-100 px-4 py-1 rounded-full inline-block mb-4">High Yield Investment Platform</span>
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                    Grow Your Crypto <span className="text-blue-600">Assets</span> with Confidence
+                    Grow Your <span className="text-blue-600">Wealth</span> with Confidence
                   </h1>
                   <p className="text-xl text-gray-600 mb-8">
-                    Our platform offers secure, high-yield investment opportunities tailored to your crypto portfolio needs.
+                    Our platform offers secure, high-yield investment opportunities tailored to your portfolio needs across multiple asset classes.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Link to="/plans">
@@ -47,8 +47,8 @@ const Index = () => {
                   <HandDrawnContainer className="relative z-10 overflow-hidden p-8 bg-white">
                     <div className="relative">
                       <img 
-                        src="https://cdn.pixabay.com/photo/2018/01/18/07/31/bitcoin-3089728_1280.jpg" 
-                        alt="Cryptocurrency Investment" 
+                        src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                        alt="Investment Portfolio Management"
                         className="rounded-lg w-full h-auto"
                       />
                       <div className="absolute top-4 left-4 bg-white bg-opacity-90 p-3 rounded-lg border-2 border-black">
@@ -79,7 +79,7 @@ const Index = () => {
               <span className="font-handwritten text-lg text-blue-600 bg-blue-100 px-4 py-1 rounded-full inline-block mb-4">Why Choose Us</span>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Features Designed for Smart Investors</h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Our platform combines security, transparency, and high returns to provide you with the best crypto investment experience.
+                Our platform combines security, transparency, and high returns to provide you with the best investment experience across traditional and alternative assets.
               </p>
             </div>
 
@@ -101,7 +101,7 @@ const Index = () => {
               />
               <FeatureCard
                 title="Multiple Coins"
-                description="Invest in various cryptocurrencies through our diversified plans"
+                description="Invest in stocks, bonds, real estate, and commodities through our diversified plans"
                 icon={<Coins className="h-6 w-6" />}
               />
             </div>
@@ -176,9 +176,9 @@ const Index = () => {
         <section className="py-16 bg-blue-50">
           <div className="container mx-auto px-4">
             <HandDrawnContainer className="max-w-4xl mx-auto p-8 md:p-12 bg-white text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Grow Your Crypto?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Grow Your Wealth?</h2>
               <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-                Join thousands of investors who trust our platform for secure and high-yield cryptocurrency investments.
+                Join thousands of investors who trust our platform for secure and high-yield investment opportunities.
               </p>
               <Link to="/register">
                 <HandDrawnButton variant="primary" className="px-8 py-4 text-lg animate-pulse-subtle">

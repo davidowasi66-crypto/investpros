@@ -20,7 +20,6 @@ export const updateUserProfile = async (userId: string, profileData: {
   username?: string;
   full_name?: string;
   avatar_url?: string;
-  role?: string;
 }) => {
   const { data, error } = await supabase
     .from('profiles')
@@ -92,11 +91,10 @@ export const getUserReferrals = async (userId: string) => {
 
 // Function to promote a user to admin
 export const promoteUserToAdmin = async (userId: string) => {
-  // Update the user's role in the profiles table
+  // Create admin role for the user
   const { data, error } = await supabase
-    .from('profiles')
-    .update({ role: 'admin' })
-    .eq('id', userId)
+    .from('user_roles')
+    .upsert({ user_id: userId, role: 'admin' })
     .select()
     .single();
     
@@ -110,13 +108,12 @@ export const promoteUserToAdmin = async (userId: string) => {
 
 // Function to demote a user from admin
 export const demoteUserFromAdmin = async (userId: string) => {
-  // Update the user's role in the profiles table
+  // Delete admin role for the user
   const { data, error } = await supabase
-    .from('profiles')
-    .update({ role: 'user' })
-    .eq('id', userId)
-    .select()
-    .single();
+    .from('user_roles')
+    .delete()
+    .eq('user_id', userId)
+    .eq('role', 'admin');
     
   if (error) {
     console.error('Error demoting user from admin:', error);
@@ -131,11 +128,12 @@ export const checkUserRole = async (userId: string, role: 'user' | 'admin') => {
   console.log(`Checking if user ${userId} has role ${role}`);
   
   try {
-    // Check the user's role in the profiles table
+    // Check the user's role in the user_roles table
     const { data, error } = await supabase
-      .from('profiles')
+      .from('user_roles')
       .select('role')
-      .eq('id', userId)
+      .eq('user_id', userId)
+      .eq('role', role)
       .maybeSingle();
       
     if (error) {

@@ -11,7 +11,6 @@ import {
   ArrowUp, 
   ArrowDown, 
   ExternalLink,
-  Wallet,
   UserPlus,
   PlusCircle
 } from 'lucide-react';
@@ -136,7 +135,7 @@ const Dashboard = () => {
             </Link>
             <Link to="/withdraw" className="w-full">
               <HandDrawnContainer className="p-4 bg-blue-50 hover:bg-blue-100 transition-colors text-center h-full">
-                <Wallet className="h-6 w-6 mx-auto mb-1 text-blue-600" />
+                <ArrowUp className="h-6 w-6 mx-auto mb-1 text-blue-600" />
                 <p className="font-handwritten font-bold">Withdraw</p>
               </HandDrawnContainer>
             </Link>
@@ -341,7 +340,7 @@ const Dashboard = () => {
                 <div className="flex flex-col sm:flex-row gap-2 w-full">
                   <input
                     type="text"
-                    value={`https://cryptoyields.com/ref/${user?.id?.substring(0, 8)}`}
+                    value={`https://investpro.com/ref/${user?.id?.substring(0, 8)}`}
                     readOnly
                     className="hand-drawn-input flex-grow text-sm truncate"
                   />

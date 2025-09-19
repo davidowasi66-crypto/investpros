@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Copy, CheckCircle, AlertCircle, CreditCard, Bitcoin, Coins } from 'lucide-react';
+import { Copy, CheckCircle, AlertCircle, CreditCard, Building2, Banknote } from 'lucide-react';
 import HandDrawnButton from '@/components/ui/HandDrawnButton';
 import HandDrawnContainer from '@/components/ui/HandDrawnContainer';
 import Navbar from '@/components/layout/Navbar';
@@ -17,7 +17,7 @@ const Deposit = () => {
   const navigate = useNavigate();
   
   const [amount, setAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('bitcoin');
+  const [paymentMethod, setPaymentMethod] = useState('bank_transfer');
   const [isLoading, setIsLoading] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -32,8 +32,13 @@ const Deposit = () => {
   // Get minimum deposit from settings
   const minDeposit = settings?.min_deposit?.amount || 100;
 
-  // Mock crypto address - in a real app this would be generated
-  const cryptoAddress = '1Abc123defGHijkLMNOpqrsTuVwxYZ456789';
+  // Mock bank details - in a real app this would be from settings
+  const bankDetails = {
+    accountName: "InvestPro Ltd",
+    accountNumber: "123456789",
+    routingNumber: "021000021",
+    swiftCode: "INVPUS33"
+  };
 
   const depositMutation = useMutation({
     mutationFn: (depositData: {
@@ -61,12 +66,12 @@ const Deposit = () => {
     }
   });
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(cryptoAddress);
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
     setCopied(true);
     toast({
-      title: "Address copied",
-      description: "The address has been copied to your clipboard",
+      title: "Details copied",
+      description: "The bank details have been copied to your clipboard",
     });
     
     setTimeout(() => setCopied(false), 3000);
@@ -105,7 +110,7 @@ const Deposit = () => {
         type: 'Deposit',
         amount: numAmount,
         payment_method: paymentMethod,
-        address: cryptoAddress
+        address: bankDetails.accountNumber
       });
     }
   };
@@ -154,15 +159,15 @@ const Deposit = () => {
                         <button
                           type="button"
                           className={`relative flex items-center justify-center p-4 border-2 border-black rounded-lg transition-all ${
-                            paymentMethod === 'bitcoin' ? 'bg-blue-50' : 'bg-white hover:bg-gray-50'
+                            paymentMethod === 'bank_transfer' ? 'bg-blue-50' : 'bg-white hover:bg-gray-50'
                           }`}
-                          onClick={() => setPaymentMethod('bitcoin')}
+                          onClick={() => setPaymentMethod('bank_transfer')}
                         >
                           <div className="flex flex-col items-center">
-                            <Bitcoin className="h-8 w-8 mb-2 text-amber-500" />
-                            <span className="font-handwritten">Bitcoin</span>
+                            <Building2 className="h-8 w-8 mb-2 text-blue-500" />
+                            <span className="font-handwritten">Bank Transfer</span>
                           </div>
-                          {paymentMethod === 'bitcoin' && (
+                          {paymentMethod === 'bank_transfer' && (
                             <div className="absolute top-2 right-2">
                               <CheckCircle className="h-4 w-4 text-green-600" />
                             </div>
@@ -172,33 +177,33 @@ const Deposit = () => {
                         <button
                           type="button"
                           className={`relative flex items-center justify-center p-4 border-2 border-black rounded-lg transition-all ${
-                            paymentMethod === 'ethereum' ? 'bg-blue-50' : 'bg-white hover:bg-gray-50'
+                            paymentMethod === 'credit_card' ? 'bg-blue-50' : 'bg-white hover:bg-gray-50'
                           }`}
-                          onClick={() => setPaymentMethod('ethereum')}
-                        >
-                          <div className="flex flex-col items-center">
-                            <Coins className="h-8 w-8 mb-2 text-blue-400" />
-                            <span className="font-handwritten">Ethereum</span>
-                          </div>
-                          {paymentMethod === 'ethereum' && (
-                            <div className="absolute top-2 right-2">
-                              <CheckCircle className="h-4 w-4 text-green-600" />
-                            </div>
-                          )}
-                        </button>
-                        
-                        <button
-                          type="button"
-                          className={`relative flex items-center justify-center p-4 border-2 border-black rounded-lg transition-all ${
-                            paymentMethod === 'usdt' ? 'bg-blue-50' : 'bg-white hover:bg-gray-50'
-                          }`}
-                          onClick={() => setPaymentMethod('usdt')}
+                          onClick={() => setPaymentMethod('credit_card')}
                         >
                           <div className="flex flex-col items-center">
                             <CreditCard className="h-8 w-8 mb-2 text-green-500" />
-                            <span className="font-handwritten">USDT</span>
+                            <span className="font-handwritten">Credit Card</span>
                           </div>
-                          {paymentMethod === 'usdt' && (
+                          {paymentMethod === 'credit_card' && (
+                            <div className="absolute top-2 right-2">
+                              <CheckCircle className="h-4 w-4 text-green-600" />
+                            </div>
+                          )}
+                        </button>
+                        
+                        <button
+                          type="button"
+                          className={`relative flex items-center justify-center p-4 border-2 border-black rounded-lg transition-all ${
+                            paymentMethod === 'wire_transfer' ? 'bg-blue-50' : 'bg-white hover:bg-gray-50'
+                          }`}
+                          onClick={() => setPaymentMethod('wire_transfer')}
+                        >
+                          <div className="flex flex-col items-center">
+                            <Banknote className="h-8 w-8 mb-2 text-amber-500" />
+                            <span className="font-handwritten">Wire Transfer</span>
+                          </div>
+                          {paymentMethod === 'wire_transfer' && (
                             <div className="absolute top-2 right-2">
                               <CheckCircle className="h-4 w-4 text-green-600" />
                             </div>
@@ -220,34 +225,73 @@ const Deposit = () => {
                   <div className="space-y-6">
                     <div className="text-center mb-6">
                       <div className="inline-block p-4 bg-blue-50 rounded-full mb-4">
-                        {paymentMethod === 'bitcoin' && <Bitcoin className="h-12 w-12 text-amber-500" />}
-                        {paymentMethod === 'ethereum' && <Coins className="h-12 w-12 text-blue-400" />}
-                        {paymentMethod === 'usdt' && <CreditCard className="h-12 w-12 text-green-500" />}
+                        {paymentMethod === 'bank_transfer' && <Building2 className="h-12 w-12 text-blue-500" />}
+                        {paymentMethod === 'credit_card' && <CreditCard className="h-12 w-12 text-green-500" />}
+                        {paymentMethod === 'wire_transfer' && <Banknote className="h-12 w-12 text-amber-500" />}
                       </div>
-                      <h2 className="text-2xl font-bold mb-1">Send {paymentMethod.charAt(0).toUpperCase() + paymentMethod.slice(1)}</h2>
-                      <p className="text-gray-600">Send exactly <span className="font-semibold">${amount}</span> worth of {paymentMethod}</p>
+                      <h2 className="text-2xl font-bold mb-1">Bank Transfer Details</h2>
+                      <p className="text-gray-600">Transfer exactly <span className="font-semibold">${amount}</span> using the details below</p>
                     </div>
                     
-                    <div className="bg-gray-50 p-4 rounded-lg border-2 border-dashed border-gray-300">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-gray-600 font-handwritten">Payment Address</span>
-                        <button
-                          onClick={handleCopy}
-                          className="text-blue-600 hover:text-blue-800 transition-colors flex items-center"
-                        >
-                          {copied ? (
-                            <>
-                              <CheckCircle className="h-4 w-4 mr-1" /> Copied
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="h-4 w-4 mr-1" /> Copy
-                            </>
-                          )}
-                        </button>
+                    <div className="bg-gray-50 p-4 rounded-lg border-2 border-dashed border-gray-300 space-y-4">
+                      <div>
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm text-gray-600 font-handwritten">Account Name</span>
+                          <button
+                            onClick={() => handleCopy(bankDetails.accountName)}
+                            className="text-blue-600 hover:text-blue-800 transition-colors flex items-center"
+                          >
+                            <Copy className="h-4 w-4 mr-1" /> Copy
+                          </button>
+                        </div>
+                        <div className="font-mono text-sm bg-white p-3 rounded-md border border-gray-200">
+                          {bankDetails.accountName}
+                        </div>
                       </div>
-                      <div className="font-mono text-sm bg-white p-3 rounded-md border border-gray-200 break-all">
-                        {cryptoAddress}
+                      
+                      <div>
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm text-gray-600 font-handwritten">Account Number</span>
+                          <button
+                            onClick={() => handleCopy(bankDetails.accountNumber)}
+                            className="text-blue-600 hover:text-blue-800 transition-colors flex items-center"
+                          >
+                            <Copy className="h-4 w-4 mr-1" /> Copy
+                          </button>
+                        </div>
+                        <div className="font-mono text-sm bg-white p-3 rounded-md border border-gray-200">
+                          {bankDetails.accountNumber}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm text-gray-600 font-handwritten">Routing Number</span>
+                          <button
+                            onClick={() => handleCopy(bankDetails.routingNumber)}
+                            className="text-blue-600 hover:text-blue-800 transition-colors flex items-center"
+                          >
+                            <Copy className="h-4 w-4 mr-1" /> Copy
+                          </button>
+                        </div>
+                        <div className="font-mono text-sm bg-white p-3 rounded-md border border-gray-200">
+                          {bankDetails.routingNumber}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm text-gray-600 font-handwritten">SWIFT Code</span>
+                          <button
+                            onClick={() => handleCopy(bankDetails.swiftCode)}
+                            className="text-blue-600 hover:text-blue-800 transition-colors flex items-center"
+                          >
+                            <Copy className="h-4 w-4 mr-1" /> Copy
+                          </button>
+                        </div>
+                        <div className="font-mono text-sm bg-white p-3 rounded-md border border-gray-200">
+                          {bankDetails.swiftCode}
+                        </div>
                       </div>
                     </div>
                     
@@ -256,8 +300,8 @@ const Deposit = () => {
                       <div>
                         <h3 className="font-medium text-amber-800 mb-1">Important</h3>
                         <p className="text-amber-700 text-sm">
-                          Please send only {paymentMethod} to this address. Sending any other cryptocurrency may result in permanent loss.
-                          Your account will be credited after the transaction is confirmed on the blockchain.
+                          Please include your user ID ({user?.id?.substring(0, 8)}) in the transfer reference. 
+                          Your account will be credited within 1-3 business days after we receive the transfer.
                         </p>
                       </div>
                     </div>
@@ -287,17 +331,17 @@ const Deposit = () => {
                 <div className="space-y-4">
                   <div>
                     <h3 className="font-handwritten font-medium mb-1">Processing Time</h3>
-                    <p className="text-gray-600 text-sm">Deposits are typically credited within 1-3 blockchain confirmations.</p>
+                    <p className="text-gray-600 text-sm">Deposits are typically credited within 1-3 business days after verification.</p>
                   </div>
                   
                   <div>
                     <h3 className="font-handwritten font-medium mb-1">Minimum Deposit</h3>
-                    <p className="text-gray-600 text-sm">${minDeposit} equivalent in cryptocurrency.</p>
+                    <p className="text-gray-600 text-sm">${minDeposit} minimum deposit amount.</p>
                   </div>
                   
                   <div>
                     <h3 className="font-handwritten font-medium mb-1">Transaction Fees</h3>
-                    <p className="text-gray-600 text-sm">We do not charge any fees for deposits. Network fees apply.</p>
+                    <p className="text-gray-600 text-sm">We do not charge any fees for deposits. Bank fees may apply.</p>
                   </div>
                 </div>
                 

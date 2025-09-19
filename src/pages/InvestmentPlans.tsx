@@ -12,7 +12,7 @@ const InvestmentPlans = () => {
   const faqItems = [
     {
       question: "How do the investment plans work?",
-      answer: "Our investment plans utilize various cryptocurrency trading strategies and staking mechanisms to generate returns. Once you select a plan and deposit your funds, our system automatically allocates your investment according to the plan's strategy."
+      answer: "Our investment plans utilize diversified portfolios including stocks, bonds, commodities, and real estate investments to generate returns. Once you select a plan and deposit your funds, our expert team allocates your investment according to the plan's strategy."
     },
     {
       question: "When do I receive my returns?",
@@ -23,8 +23,8 @@ const InvestmentPlans = () => {
       answer: "Yes, most plans allow early withdrawal, though some may include a small fee. The terms are specific to each investment plan and are clearly indicated before you invest."
     },
     {
-      question: "What cryptocurrencies can I invest with?",
-      answer: "We currently accept Bitcoin (BTC), Ethereum (ETH), and USDT for investments. More cryptocurrencies will be added in the future."
+      question: "What payment methods do you accept?",
+      answer: "We accept bank transfers, credit/debit cards, and popular digital payment methods. All transactions are processed securely through encrypted channels."
     }
   ];
 
@@ -39,7 +39,7 @@ const InvestmentPlans = () => {
             <span className="font-handwritten text-lg text-blue-600 bg-blue-100 px-4 py-1 rounded-full inline-block mb-4">Investment Opportunities</span>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Choose Your Perfect Investment Plan</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              We offer a variety of investment plans designed to match different risk tolerances, timeframes, and financial goals.
+              We offer diversified investment plans across stocks, bonds, real estate, and commodities designed to match different risk tolerances, timeframes, and financial goals.
             </p>
           </div>
         </section>
@@ -51,7 +51,7 @@ const InvestmentPlans = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
               <InvestmentPlanCard
-                title="Starter"
+                title="Conservative"
                 percentage={5}
                 duration="weekly"
                 features={[
@@ -59,11 +59,11 @@ const InvestmentPlans = () => {
                   "Weekly payouts",
                   "30-day contract",
                   "No early withdrawal fee",
-                  "Basic analytics"
+                  "Basic portfolio tracking"
                 ]}
               />
               <InvestmentPlanCard
-                title="Growth"
+                title="Balanced"
                 percentage={12}
                 duration="weekly"
                 features={[
@@ -71,13 +71,13 @@ const InvestmentPlans = () => {
                   "Weekly payouts",
                   "60-day contract",
                   "Priority support",
-                  "Advanced analytics",
+                  "Advanced portfolio analytics",
                   "Referral bonuses"
                 ]}
                 popular={true}
               />
               <InvestmentPlanCard
-                title="Premium"
+                title="Aggressive"
                 percentage={20}
                 duration="weekly"
                 features={[
@@ -85,9 +85,9 @@ const InvestmentPlans = () => {
                   "Weekly payouts",
                   "90-day contract",
                   "VIP support",
-                  "Full dashboard access",
+                  "Full portfolio dashboard",
                   "Compound interest option",
-                  "Exclusive investment options"
+                  "Exclusive high-yield opportunities"
                 ]}
               />
             </div>
@@ -96,7 +96,7 @@ const InvestmentPlans = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <InvestmentPlanCard
-                title="Long-Term Hodler"
+                title="Long-Term Growth"
                 percentage={40}
                 duration="monthly"
                 features={[
@@ -104,33 +104,33 @@ const InvestmentPlans = () => {
                   "Monthly payouts",
                   "6-month contract",
                   "Compounding option",
-                  "Portfolio diversification",
+                  "Multi-asset diversification",
                   "Quarterly strategy review"
                 ]}
               />
               <InvestmentPlanCard
-                title="Staking Plus"
+                title="Income Focus"
                 percentage={8}
                 duration="weekly"
                 features={[
                   "Minimum investment: $300",
                   "Weekly payouts",
                   "45-day contract",
-                  "Staking rewards",
-                  "Multiple coin options",
-                  "Low volatility"
+                  "Dividend-focused stocks",
+                  "Multiple asset classes",
+                  "Low volatility strategy"
                 ]}
               />
               <InvestmentPlanCard
-                title="DeFi Yield"
+                title="Market Opportunities"
                 percentage={15}
                 duration="weekly"
                 features={[
                   "Minimum investment: $700",
                   "Weekly payouts",
                   "60-day contract",
-                  "Yield farming rewards",
-                  "DeFi protocol exposure",
+                  "Growth stock focus",
+                  "Emerging market exposure",
                   "Higher risk/reward ratio"
                 ]}
               />
@@ -148,9 +148,9 @@ const InvestmentPlans = () => {
                 <thead>
                   <tr className="bg-blue-50">
                     <th className="border-2 border-black p-4 text-left">Feature</th>
-                    <th className="border-2 border-black p-4 text-center">Starter</th>
-                    <th className="border-2 border-black p-4 text-center">Growth</th>
-                    <th className="border-2 border-black p-4 text-center">Premium</th>
+                    <th className="border-2 border-black p-4 text-center">Conservative</th>
+                    <th className="border-2 border-black p-4 text-center">Balanced</th>
+                    <th className="border-2 border-black p-4 text-center">Aggressive</th>
                   </tr>
                 </thead>
                 <tbody className="font-medium">
@@ -229,7 +229,7 @@ const InvestmentPlans = () => {
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-4">Ready to Start Investing?</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Create an account today and start growing your cryptocurrency assets with our proven investment strategies.
+              Create an account today and start growing your wealth with our proven investment strategies across multiple asset classes.
             </p>
             <Link to="/register">
               <HandDrawnButton variant="primary" className="px-8 py-4 text-lg">

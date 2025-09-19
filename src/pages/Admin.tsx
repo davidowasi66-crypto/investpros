@@ -672,7 +672,7 @@ const Admin = () => {
               <label className="block font-handwritten font-medium mb-2">Platform Name</label>
               <input
                 type="text"
-                value="CryptoYields"
+                value="InvestPro"
                 className="hand-drawn-input w-full"
               />
             </div>
@@ -681,7 +681,7 @@ const Admin = () => {
               <label className="block font-handwritten font-medium mb-2">Contact Email</label>
               <input
                 type="email"
-                value="support@cryptoyields.com"
+                value="support@investpro.com"
                 className="hand-drawn-input w-full"
               />
             </div>
