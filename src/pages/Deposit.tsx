@@ -30,7 +30,7 @@ const Deposit = () => {
   });
 
   // Get minimum deposit from settings
-  const minDeposit = settings?.min_deposit?.amount || 100;
+  const minDeposit = 100; // Default minimum deposit
 
   // Mock bank details - in a real app this would be from settings
   const bankDetails = {

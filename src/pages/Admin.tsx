@@ -28,7 +28,6 @@ import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { getAllUsers, promoteUserToAdmin } from '@/services/userService';
 import { getAllTransactions, updateTransactionStatus } from '@/services/transactionService';
-import { getInvestmentPlans } from '@/services/investmentService';
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -57,22 +56,16 @@ const Admin = () => {
     enabled: !!user
   });
   
-  const { 
-    data: plans = [], 
-    isLoading: isLoadingPlans,
-    refetch: refetchPlans
-  } = useQuery({
-    queryKey: ['admin-plans'],
-    queryFn: getInvestmentPlans,
-    enabled: !!user
-  });
+  // Remove investment plans query for now since table doesn't exist
+  const plans: any[] = [];
+  const isLoadingPlans = false;
 
   const stats = {
     totalUsers: users.length,
     totalInvested: transactions
       .filter(tx => tx.type === 'Deposit' && tx.status === 'Completed')
       .reduce((sum, tx) => sum + Number(tx.amount), 0),
-    activePlans: plans.filter(plan => plan.is_popular).length,
+    activePlans: 0, // No plans table yet
     pendingWithdrawals: transactions
       .filter(tx => tx.type === 'Withdrawal' && tx.status === 'Pending')
       .length
@@ -206,7 +199,7 @@ const Admin = () => {
                           <p className="text-xs text-gray-600">{user.username || 'No username'}</p>
                         </div>
                       </td>
-                      <td className="border-2 border-black p-2">{user.email || user.username || 'No email'}</td>
+                      <td className="border-2 border-black p-2">{user.username || 'No email'}</td>
                       {!isMobile && (
                         <td className="border-2 border-black p-2">
                           <span className="inline-block px-2 py-1 rounded text-xs bg-green-100 text-green-800">
@@ -246,7 +239,7 @@ const Admin = () => {
                   {transactions.slice(0, 3).map((tx) => (
                     <tr key={tx.id}>
                       <td className="border-2 border-black p-2">
-                        {tx.profiles?.full_name || tx.profiles?.username || 'User'}
+                        {(tx as any).profiles?.full_name || (tx as any).profiles?.username || 'User'}
                       </td>
                       <td className="border-2 border-black p-2">{tx.type}</td>
                       <td className="border-2 border-black p-2">${Number(tx.amount).toLocaleString()}</td>
@@ -276,38 +269,9 @@ const Admin = () => {
       
       <HandDrawnContainer>
         <h2 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3">Investment Plans Overview</h2>
-        {isLoadingPlans ? (
-          <div className="text-center py-4">Loading plans...</div>
-        ) : (
-          <div className="overflow-x-auto -mx-2 px-2">
-            <table className="min-w-full border-collapse">
-              <thead>
-                <tr className="bg-blue-50">
-                  <th className="border-2 border-black p-2 text-left">Plan Name</th>
-                  <th className="border-2 border-black p-2 text-left">Return</th>
-                  {!isMobile && <th className="border-2 border-black p-2 text-left">Duration</th>}
-                  <th className="border-2 border-black p-2 text-left">Min. Amount</th>
-                  <th className="border-2 border-black p-2 text-left">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {plans.map((plan) => (
-                  <tr key={plan.id}>
-                    <td className="border-2 border-black p-2">{plan.title}</td>
-                    <td className="border-2 border-black p-2">{plan.percentage}%</td>
-                    {!isMobile && <td className="border-2 border-black p-2">{plan.duration}</td>}
-                    <td className="border-2 border-black p-2">${Number(plan.minimum_amount).toLocaleString()}</td>
-                    <td className="border-2 border-black p-2">
-                      <span className="inline-block px-2 py-1 rounded text-xs bg-green-100 text-green-800">
-                        Active
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+        <div className="text-center py-8 text-gray-500">
+          <p>Investment plans feature not yet configured</p>
+        </div>
       </HandDrawnContainer>
     </>
   );
@@ -377,7 +341,8 @@ const Admin = () => {
               </thead>
               <tbody>
                 {users.map((user) => {
-                  const isAdmin = user.user_roles?.some(role => role.role === 'admin');
+                  const userRoles = Array.isArray(user.user_roles) ? user.user_roles : [];
+                  const isAdmin = userRoles.some((role: any) => role.role === 'admin');
                   
                   return (
                     <tr key={user.id}>
@@ -387,10 +352,10 @@ const Admin = () => {
                           <p className="text-xs text-gray-600">{user.username || 'No username'}</p>
                         </div>
                       </td>
-                      <td className="border-2 border-black p-2">{user.email || user.username || 'No email'}</td>
+                      <td className="border-2 border-black p-2">{user.username || 'No email'}</td>
                       <td className="border-2 border-black p-2">
                         <button 
-                          onClick={() => handleRoleToggle(user.id, user.user_roles || [])}
+                          onClick={() => handleRoleToggle(user.id, userRoles)}
                           className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${
                             isAdmin 
                               ? 'bg-purple-100 text-purple-800 hover:bg-purple-200'

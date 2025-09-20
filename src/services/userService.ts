@@ -37,10 +37,15 @@ export const updateUserProfile = async (userId: string, profileData: {
 };
 
 export const getAllUsers = async () => {
-  // First get all profiles
+  // Get all profiles with their roles
   const { data: profiles, error: profilesError } = await supabase
     .from('profiles')
-    .select('*')
+    .select(`
+      *,
+      user_roles (
+        role
+      )
+    `)
     .order('created_at', { ascending: false });
     
   if (profilesError) {
@@ -48,45 +53,19 @@ export const getAllUsers = async () => {
     throw profilesError;
   }
   
-  // Then get all user roles
-  const { data: userRoles, error: rolesError } = await supabase
-    .from('user_roles')
-    .select('*');
-    
-  if (rolesError) {
-    console.error('Error fetching user roles:', rolesError);
-    throw rolesError;
-  }
-  
-  // Join the data manually
-  const usersWithRolesAndEmail = profiles.map(profile => ({
+  // Transform data to match expected format
+  const usersWithRoles = profiles.map(profile => ({
     ...profile,
-    email: profile.username, // Using username as email
-    user_roles: userRoles.filter(role => role.user_id === profile.id)
+    email: profile.username, // Using username as email for compatibility
+    user_roles: profile.user_roles || []
   }));
   
-  return usersWithRolesAndEmail;
+  return usersWithRoles;
 };
 
 export const getUserReferrals = async (userId: string) => {
-  const { data, error } = await supabase
-    .from('referrals')
-    .select(`
-      *,
-      referred:referred_id (
-        username,
-        full_name
-      )
-    `)
-    .eq('referrer_id', userId)
-    .order('created_at', { ascending: false });
-    
-  if (error) {
-    console.error('Error fetching user referrals:', error);
-    throw error;
-  }
-  
-  return data;
+  // Return empty array since referrals table doesn't exist yet
+  return [];
 };
 
 // Function to promote a user to admin
@@ -142,7 +121,7 @@ export const checkUserRole = async (userId: string, role: 'user' | 'admin') => {
     }
     
     console.log('Role check result:', data);
-    return data?.role === role;
+    return !!data;
   } catch (err) {
     console.error('Exception checking user role:', err);
     return false;

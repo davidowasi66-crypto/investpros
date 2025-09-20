@@ -80,11 +80,11 @@ const Dashboard = () => {
     nextPayout: (() => {
       const sortedInvestments = [...investments]
         .filter(inv => inv.status === 'Active')
-        .sort((a, b) => new Date(a.next_payout).getTime() - new Date(b.next_payout).getTime());
+        .sort((a, b) => new Date(a.end_date || a.created_at).getTime() - new Date(b.end_date || b.created_at).getTime());
       
       if (sortedInvestments.length === 0) return 'No active investments';
       
-      const nextDate = new Date(sortedInvestments[0].next_payout);
+      const nextDate = new Date(sortedInvestments[0].end_date || sortedInvestments[0].created_at);
       const today = new Date();
       const diffTime = Math.abs(nextDate.getTime() - today.getTime());
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -220,24 +220,24 @@ const Dashboard = () => {
                     {investments.map((investment) => (
                       <tr key={investment.id}>
                         <td className="border-2 border-black p-2">
-                          {investment.investment_plans?.title || 'Unknown Plan'}
+                          {investment.plan_name || 'Unknown Plan'}
                         </td>
                         <td className="border-2 border-black p-2">
-                          ${Number(investment.amount).toLocaleString()}
+                          ${Number(investment.amount || 0).toLocaleString()}
                         </td>
                         {!isMobile && (
                           <td className="border-2 border-black p-2">
-                            {new Date(investment.start_date).toLocaleDateString()}
+                            {new Date(investment.created_at).toLocaleDateString()}
                           </td>
                         )}
                         <td className="border-2 border-black p-2">
                           {investment.status === 'Active' 
-                            ? new Date(investment.next_payout).toLocaleDateString() 
+                            ? (investment.end_date ? new Date(investment.end_date).toLocaleDateString() : 'TBD')
                             : 'Completed'}
                         </td>
                         {!isMobile && (
                           <td className="border-2 border-black p-2">
-                            {investment.investment_plans?.percentage || 0}%
+                            {Number(investment.interest_rate || 0)}%
                           </td>
                         )}
                         <td className="border-2 border-black p-2">

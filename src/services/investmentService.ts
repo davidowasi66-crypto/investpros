@@ -2,26 +2,15 @@
 import { supabase } from '@/integrations/supabase/client';
 
 export const getInvestmentPlans = async () => {
-  const { data, error } = await supabase
-    .from('investment_plans')
-    .select('*')
-    .order('minimum_amount', { ascending: true });
-    
-  if (error) {
-    console.error('Error fetching investment plans:', error);
-    throw error;
-  }
-  
-  return data;
+  // Return empty array since investment_plans table doesn't exist yet
+  return [];
 };
 
 export const getUserInvestments = async (userId: string) => {
+  // Use the Investment table that exists
   const { data, error } = await supabase
-    .from('investments')
-    .select(`
-      *,
-      investment_plans:plan_id (title, percentage, duration)
-    `)
+    .from('Investment')
+    .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
     
@@ -30,17 +19,14 @@ export const getUserInvestments = async (userId: string) => {
     throw error;
   }
   
-  return data;
+  return data || [];
 };
 
 export const getAllInvestments = async () => {
+  // Use the Investment table that exists
   const { data, error } = await supabase
-    .from('investments')
-    .select(`
-      *,
-      investment_plans:plan_id (title, percentage, duration),
-      profiles:user_id (username, full_name)
-    `)
+    .from('Investment')
+    .select('*')
     .order('created_at', { ascending: false });
     
   if (error) {
@@ -48,51 +34,27 @@ export const getAllInvestments = async () => {
     throw error;
   }
   
-  return data;
+  return data || [];
 };
 
 export const createInvestment = async (investmentData: {
   user_id: string;
-  plan_id: string;
+  plan_name: string;
   amount: number;
+  interest_rate?: number;
 }) => {
-  // Get plan details to calculate end_date and next_payout
-  const { data: plan, error: planError } = await supabase
-    .from('investment_plans')
-    .select('duration, percentage')
-    .eq('id', investmentData.plan_id)
-    .single();
-    
-  if (planError) {
-    console.error('Error fetching plan details:', planError);
-    throw planError;
-  }
-  
-  // Calculate dates
-  const startDate = new Date();
-  
-  // Parse duration (e.g., "30 days", "60 days")
-  const durationMatch = plan.duration.match(/(\d+)\s*days?/i);
-  const durationDays = durationMatch ? parseInt(durationMatch[1]) : 30;
-  
+  // Use the Investment table that exists
   const endDate = new Date();
-  endDate.setDate(startDate.getDate() + durationDays);
-  
-  // Next payout in 7 days (weekly payout)
-  const nextPayout = new Date();
-  nextPayout.setDate(startDate.getDate() + 7);
-  
-  // Calculate expected return
-  const returnAmount = investmentData.amount * (plan.percentage / 100);
+  endDate.setDate(endDate.getDate() + 30); // Default 30 days
   
   const { data, error } = await supabase
-    .from('investments')
+    .from('Investment')
     .insert({
-      ...investmentData,
-      start_date: startDate.toISOString(),
-      end_date: endDate.toISOString(),
-      next_payout: nextPayout.toISOString(),
-      return_amount: returnAmount,
+      user_id: investmentData.user_id,
+      plan_name: investmentData.plan_name,
+      amount: investmentData.amount,
+      interest_rate: investmentData.interest_rate || 5.0,
+      end_date: endDate.toISOString().split('T')[0], // Date only
       status: 'Active'
     })
     .select()
