@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
+import AdminDashboard from "./pages/AdminDashboard";
 import InvestmentPlans from "./pages/InvestmentPlans";
 import NotFound from "./pages/NotFound";
 import Deposit from "./pages/Deposit";
@@ -44,6 +45,14 @@ const App = () => (
               element={
                 <ProtectedRoute requireAdmin={true}>
                   <Admin />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin-dashboard" 
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <AdminDashboard />
                 </ProtectedRoute>
               } 
             />

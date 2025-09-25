@@ -101,7 +101,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         description: 'You have successfully logged in',
       });
       
-      navigate('/dashboard');
+      // Check if user is admin and redirect accordingly
+      const currentSession = await supabase.auth.getSession();
+      if (currentSession.data.session?.user) {
+        const hasAdminRole = await checkUserRole(currentSession.data.session.user.id, 'admin');
+        if (hasAdminRole) {
+          navigate('/admin-dashboard');
+        } else {
+          navigate('/dashboard');
+        }
+      }
     } catch (error: any) {
       console.error('Error signing in:', error);
     }
