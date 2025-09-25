@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Copy, CheckCircle, AlertCircle, CreditCard, Building2, Banknote } from 'lucide-react';
+import { Copy, CheckCircle, AlertCircle, CreditCard, Building2, Banknote, Coins } from 'lucide-react';
 import HandDrawnButton from '@/components/ui/HandDrawnButton';
 import HandDrawnContainer from '@/components/ui/HandDrawnContainer';
 import Navbar from '@/components/layout/Navbar';
@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/context/AuthContext';
 import { createTransaction } from '@/services/transactionService';
 import { getSettings } from '@/services/settingsService';
+import CoinbasePayment from '@/components/payment/CoinbasePayment';
 
 const Deposit = () => {
   const { toast } = useToast();
@@ -30,7 +31,7 @@ const Deposit = () => {
   });
 
   // Get minimum deposit from settings
-  const minDeposit = 100; // Default minimum deposit
+  const minDeposit = settings?.min_deposit ? parseInt(settings.min_deposit) : 100;
 
   // Mock bank details - in a real app this would be from settings
   const bankDetails = {
@@ -192,7 +193,7 @@ const Deposit = () => {
                           )}
                         </button>
                         
-                        <button
+                         <button
                           type="button"
                           className={`relative flex items-center justify-center p-4 border-2 border-black rounded-lg transition-all ${
                             paymentMethod === 'wire_transfer' ? 'bg-blue-50' : 'bg-white hover:bg-gray-50'
@@ -204,6 +205,28 @@ const Deposit = () => {
                             <span className="font-handwritten">Wire Transfer</span>
                           </div>
                           {paymentMethod === 'wire_transfer' && (
+                            <div className="absolute top-2 right-2">
+                              <CheckCircle className="h-4 w-4 text-green-600" />
+                            </div>
+                          )}
+                        </button>
+                      </div>
+                      
+                      {/* Second row for crypto */}
+                      <div className="grid grid-cols-1 sm:grid-cols-1 gap-3 mt-3">
+                        <button
+                          type="button"
+                          className={`relative flex items-center justify-center p-4 border-2 border-black rounded-lg transition-all ${
+                            paymentMethod === 'crypto' ? 'bg-blue-50' : 'bg-white hover:bg-gray-50'
+                          }`}
+                          onClick={() => setPaymentMethod('crypto')}
+                        >
+                          <div className="flex flex-col items-center">
+                            <Coins className="h-8 w-8 mb-2 text-orange-500" />
+                            <span className="font-handwritten">Cryptocurrency</span>
+                            <span className="text-xs text-gray-500">Bitcoin, Ethereum</span>
+                          </div>
+                          {paymentMethod === 'crypto' && (
                             <div className="absolute top-2 right-2">
                               <CheckCircle className="h-4 w-4 text-green-600" />
                             </div>
@@ -223,15 +246,28 @@ const Deposit = () => {
                   </form>
                 ) : (
                   <div className="space-y-6">
-                    <div className="text-center mb-6">
-                      <div className="inline-block p-4 bg-blue-50 rounded-full mb-4">
-                        {paymentMethod === 'bank_transfer' && <Building2 className="h-12 w-12 text-blue-500" />}
-                        {paymentMethod === 'credit_card' && <CreditCard className="h-12 w-12 text-green-500" />}
-                        {paymentMethod === 'wire_transfer' && <Banknote className="h-12 w-12 text-amber-500" />}
-                      </div>
-                      <h2 className="text-2xl font-bold mb-1">Bank Transfer Details</h2>
-                      <p className="text-gray-600">Transfer exactly <span className="font-semibold">${amount}</span> using the details below</p>
-                    </div>
+                    {paymentMethod === 'crypto' ? (
+                      <CoinbasePayment 
+                        amount={parseFloat(amount)}
+                        onSuccess={() => {
+                          toast({
+                            title: "Payment Submitted",
+                            description: "Your crypto payment is being processed",
+                          });
+                        }}
+                        onCancel={() => setShowAddress(false)}
+                      />
+                    ) : (
+                      <>
+                        <div className="text-center mb-6">
+                          <div className="inline-block p-4 bg-blue-50 rounded-full mb-4">
+                            {paymentMethod === 'bank_transfer' && <Building2 className="h-12 w-12 text-blue-500" />}
+                            {paymentMethod === 'credit_card' && <CreditCard className="h-12 w-12 text-green-500" />}
+                            {paymentMethod === 'wire_transfer' && <Banknote className="h-12 w-12 text-amber-500" />}
+                          </div>
+                          <h2 className="text-2xl font-bold mb-1">Bank Transfer Details</h2>
+                          <p className="text-gray-600">Transfer exactly <span className="font-semibold">${amount}</span> using the details below</p>
+                        </div>
                     
                     <div className="bg-gray-50 p-4 rounded-lg border-2 border-dashed border-gray-300 space-y-4">
                       <div>
@@ -320,6 +356,8 @@ const Deposit = () => {
                         </HandDrawnButton>
                       </Link>
                     </div>
+                      </>
+                    )}
                   </div>
                 )}
               </HandDrawnContainer>
