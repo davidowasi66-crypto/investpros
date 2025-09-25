@@ -45,7 +45,7 @@ const DashboardCard = ({
           )}
         </div>
         
-        <div className="p-3 rounded-full bg-blue-100 text-blue-600">
+        <div className="p-3 rounded-full bg-gray-50 text-primary border border-gray-100">
           {icon}
         </div>
       </div>

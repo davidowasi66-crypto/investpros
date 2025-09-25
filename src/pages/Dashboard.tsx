@@ -126,29 +126,29 @@ const Dashboard = () => {
           </div>
 
           {/* Quick Action Buttons */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2 md:mb-3 px-1 sm:px-0">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4 md:mb-6 px-1 sm:px-0">
             <Link to="/deposit" className="w-full">
-              <HandDrawnContainer className="p-4 bg-blue-50 hover:bg-blue-100 transition-colors text-center h-full">
-                <DollarSign className="h-6 w-6 mx-auto mb-1 text-blue-600" />
-                <p className="font-handwritten font-bold">Deposit</p>
+              <HandDrawnContainer className="p-6 bg-gradient-to-br from-white to-gray-50 hover:from-gray-50 hover:to-gray-100 transition-all duration-200 text-center h-full border-gray-100 hover:border-gray-200">
+                <DollarSign className="h-8 w-8 mx-auto mb-2 text-primary" />
+                <p className="font-handwritten font-bold text-gray-700">Deposit</p>
               </HandDrawnContainer>
             </Link>
             <Link to="/withdraw" className="w-full">
-              <HandDrawnContainer className="p-4 bg-blue-50 hover:bg-blue-100 transition-colors text-center h-full">
-                <ArrowUp className="h-6 w-6 mx-auto mb-1 text-blue-600" />
-                <p className="font-handwritten font-bold">Withdraw</p>
+              <HandDrawnContainer className="p-6 bg-gradient-to-br from-white to-gray-50 hover:from-gray-50 hover:to-gray-100 transition-all duration-200 text-center h-full border-gray-100 hover:border-gray-200">
+                <ArrowUp className="h-8 w-8 mx-auto mb-2 text-primary" />
+                <p className="font-handwritten font-bold text-gray-700">Withdraw</p>
               </HandDrawnContainer>
             </Link>
             <Link to="/invest" className="w-full">
-              <HandDrawnContainer className="p-4 bg-blue-50 hover:bg-blue-100 transition-colors text-center h-full">
-                <TrendingUp className="h-6 w-6 mx-auto mb-1 text-blue-600" />
-                <p className="font-handwritten font-bold">Invest</p>
+              <HandDrawnContainer className="p-6 bg-gradient-to-br from-white to-gray-50 hover:from-gray-50 hover:to-gray-100 transition-all duration-200 text-center h-full border-gray-100 hover:border-gray-200">
+                <TrendingUp className="h-8 w-8 mx-auto mb-2 text-primary" />
+                <p className="font-handwritten font-bold text-gray-700">Invest</p>
               </HandDrawnContainer>
             </Link>
             <Link to="/referral" className="w-full">
-              <HandDrawnContainer className="p-4 bg-blue-50 hover:bg-blue-100 transition-colors text-center h-full">
-                <UserPlus className="h-6 w-6 mx-auto mb-1 text-blue-600" />
-                <p className="font-handwritten font-bold">Referral</p>
+              <HandDrawnContainer className="p-6 bg-gradient-to-br from-white to-gray-50 hover:from-gray-50 hover:to-gray-100 transition-all duration-200 text-center h-full border-gray-100 hover:border-gray-200">
+                <UserPlus className="h-8 w-8 mx-auto mb-2 text-primary" />
+                <p className="font-handwritten font-bold text-gray-700">Referral</p>
               </HandDrawnContainer>
             </Link>
           </div>
@@ -330,7 +330,7 @@ const Dashboard = () => {
           </HandDrawnContainer>
 
           {/* Referral Section */}
-          <HandDrawnContainer className="bg-blue-50 mx-1 sm:mx-0">
+          <HandDrawnContainer className="bg-gradient-to-br from-white to-gray-50 border-gray-100 mx-1 sm:mx-0">
             <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="mb-4 md:mb-0 md:mr-4 w-full md:w-auto">
                 <h2 className="text-lg sm:text-xl font-bold mb-2">Refer Friends & Earn</h2>
