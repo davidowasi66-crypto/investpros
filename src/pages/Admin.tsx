@@ -135,6 +135,8 @@ const Admin = () => {
         return renderPlans();
       case 'settings':
         return renderSettings();
+      case 'content':
+        return renderContentManagement();
       default:
         return renderDashboard();
     }
@@ -621,6 +623,41 @@ const Admin = () => {
     </>
   );
 
+  const renderContentManagement = () => (
+    <>
+      <div className="mb-3 sm:mb-5 flex flex-col md:flex-row justify-between md:items-center">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2">Content Management</h1>
+          <p className="text-gray-600">Manage site pages and content</p>
+        </div>
+        <div className="mt-3 md:mt-0">
+          <HandDrawnButton 
+            variant="primary"
+            onClick={() => window.location.href = '/admin/content'}
+          >
+            Open Content Manager
+          </HandDrawnButton>
+        </div>
+      </div>
+      
+      <HandDrawnContainer className="mb-5">
+        <div className="text-center py-8">
+          <h3 className="text-lg font-bold mb-4">Advanced Content Management</h3>
+          <p className="text-gray-600 mb-6">
+            Use our comprehensive content management system to create and edit pages, 
+            manage site settings, and configure navigation menus.
+          </p>
+          <HandDrawnButton 
+            variant="primary"
+            onClick={() => window.location.href = '/admin/content'}
+          >
+            Launch Content Manager
+          </HandDrawnButton>
+        </div>
+      </HandDrawnContainer>
+    </>
+  );
+
   const renderSettings = () => (
     <>
       <div className="mb-6">
@@ -817,6 +854,22 @@ const Admin = () => {
               >
                 <BarChart3 className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                 Plans
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => {
+                  setActiveTab('content');
+                  if (isMobile) setSidebarOpen(false);
+                }}
+                className={`w-full text-left flex items-center px-3 py-2 rounded-lg font-handwritten ${
+                  activeTab === 'content' 
+                    ? 'bg-blue-500 text-white' 
+                    : 'hover:bg-blue-100'
+                }`}
+              >
+                <Edit className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                Content
               </button>
             </li>
             <li>

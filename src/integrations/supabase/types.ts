@@ -47,6 +47,72 @@ export type Database = {
         }
         Relationships: []
       }
+      navigation_menus: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean | null
+          items: Json
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          items?: Json
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          items?: Json
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      pages: {
+        Row: {
+          content: Json | null
+          created_at: string
+          created_by: string | null
+          id: string
+          is_published: boolean | null
+          meta_description: string | null
+          meta_keywords: string | null
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content?: Json | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_published?: boolean | null
+          meta_description?: string | null
+          meta_keywords?: string | null
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: Json | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_published?: boolean | null
+          meta_description?: string | null
+          meta_keywords?: string | null
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -77,6 +143,36 @@ export type Database = {
           updated_at?: string
           user_id?: string
           username?: string | null
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          key: string
+          updated_at: string
+          value: Json | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          key: string
+          updated_at?: string
+          value?: Json | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          key?: string
+          updated_at?: string
+          value?: Json | null
         }
         Relationships: []
       }
