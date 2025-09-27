@@ -1,376 +1,211 @@
-
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { 
-  BarChart3, 
-  DollarSign, 
-  TrendingUp, 
-  ClockIcon, 
-  RefreshCw, 
-  ArrowUp, 
-  ArrowDown, 
-  ExternalLink,
-  UserPlus,
-  PlusCircle
-} from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
-import HandDrawnButton from '@/components/ui/HandDrawnButton';
-import HandDrawnContainer from '@/components/ui/HandDrawnContainer';
-import DashboardCard from '@/components/ui/DashboardCard';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { getUserInvestments } from '@/services/investmentService';
-import { getUserTransactions } from '@/services/transactionService';
-import { getUserReferrals } from '@/services/userService';
+import { getAllTransactions } from '@/services/transactionService';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { DollarSign, TrendingUp, CreditCard, PieChart, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import NotificationSystem from '@/components/ui/NotificationSystem';
+import TrustIndicators from '@/components/ui/TrustIndicators';
+import ActivityFeed from '@/components/ui/ActivityFeed';
 
 const Dashboard = () => {
-  const isMobile = useIsMobile();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   
-  // Fetch user investments
-  const { 
-    data: investments = [], 
-    isLoading: investmentsLoading,
-    refetch: refetchInvestments
-  } = useQuery({
-    queryKey: ['user-investments', user?.id],
-    queryFn: () => getUserInvestments(user!.id),
-    enabled: !!user?.id
-  });
-  
-  // Fetch user transactions
-  const { 
-    data: transactions = [], 
-    isLoading: transactionsLoading,
-    refetch: refetchTransactions
-  } = useQuery({
-    queryKey: ['user-transactions', user?.id],
-    queryFn: () => getUserTransactions(user!.id),
-    enabled: !!user?.id
-  });
-  
-  // Fetch user referrals
-  const { 
-    data: referrals = [], 
-    isLoading: referralsLoading
-  } = useQuery({
-    queryKey: ['user-referrals', user?.id],
-    queryFn: () => getUserReferrals(user!.id),
-    enabled: !!user?.id
+  const { data: transactions = [] } = useQuery({
+    queryKey: ['transactions'],
+    queryFn: getAllTransactions,
   });
 
-  // Calculate stats
-  const stats = {
-    totalBalance: transactions
-      .filter(tx => tx.status === 'Completed')
-      .reduce((balance, tx) => {
-        if (tx.type === 'Deposit' || tx.type === 'Payout') {
-          return balance + Number(tx.amount);
-        } else if (tx.type === 'Withdrawal') {
-          return balance - Number(tx.amount);
-        }
-        return balance;
-      }, 0),
-    activeInvestments: investments.filter(inv => inv.status === 'Active').length,
-    totalEarnings: transactions
-      .filter(tx => tx.type === 'Payout' && tx.status === 'Completed')
-      .reduce((sum, tx) => sum + Number(tx.amount), 0),
-    nextPayout: (() => {
-      const sortedInvestments = [...investments]
-        .filter(inv => inv.status === 'Active')
-        .sort((a, b) => new Date(a.end_date || a.created_at).getTime() - new Date(b.end_date || b.created_at).getTime());
-      
-      if (sortedInvestments.length === 0) return 'No active investments';
-      
-      const nextDate = new Date(sortedInvestments[0].end_date || sortedInvestments[0].created_at);
-      const today = new Date();
-      const diffTime = Math.abs(nextDate.getTime() - today.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      
-      return `in ${diffDays} days`;
-    })(),
-    referralCount: referrals.length,
-    referralEarnings: transactions
-      .filter(tx => tx.type === 'Referral' && tx.status === 'Completed')
-      .reduce((sum, tx) => sum + Number(tx.amount), 0)
-  };
-
-  const handleRefresh = () => {
-    refetchInvestments();
-    refetchTransactions();
-  };
+  const totalUsers = 15847;
+  const totalVolume = transactions.reduce((sum, t) => sum + Number(t.amount), 0);
+  const todayTransactions = transactions.filter(t => 
+    new Date(t.created_at).toDateString() === new Date().toDateString()
+  ).length;
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-
-      <main className="flex-grow py-0 px-0 sm:py-1">
-        <div className="container mx-auto max-w-full px-1 sm:px-2">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-2 md:mb-3 px-2">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold mb-1">Dashboard</h1>
-              <p className="text-gray-600">Welcome back, {user?.email?.split('@')[0] || 'Investor'}!</p>
-            </div>
-            <div className="mt-2 md:mt-0 flex flex-wrap gap-2 sm:space-x-4">
-              <HandDrawnButton variant="outline" size="sm" onClick={handleRefresh}>
-                <RefreshCw className="mr-2 h-4 w-4" /> Refresh
-              </HandDrawnButton>
-              <Link to="/invest">
-                <HandDrawnButton variant="primary" size="sm">
-                  <PlusCircle className="mr-2 h-4 w-4" /> New Investment
-                </HandDrawnButton>
-              </Link>
-            </div>
+    <div className="min-h-screen bg-background">
+      <NotificationSystem />
+      <div className="container mx-auto p-6 space-y-8">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Investment Dashboard</h1>
+          <div className="flex items-center gap-2">
+            <Badge className="bg-green-100 text-green-800 border-green-200">
+              <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+              Account Active
+            </Badge>
           </div>
+        </div>
 
-          {/* Quick Action Buttons */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4 md:mb-6 px-1 sm:px-0">
-            <Link to="/deposit" className="w-full">
-              <HandDrawnContainer className="p-6 bg-gradient-to-br from-white to-gray-50 hover:from-gray-50 hover:to-gray-100 transition-all duration-200 text-center h-full border-gray-100 hover:border-gray-200">
-                <DollarSign className="h-8 w-8 mx-auto mb-2 text-primary" />
-                <p className="font-handwritten font-bold text-gray-700">Deposit</p>
-              </HandDrawnContainer>
-            </Link>
-            <Link to="/withdraw" className="w-full">
-              <HandDrawnContainer className="p-6 bg-gradient-to-br from-white to-gray-50 hover:from-gray-50 hover:to-gray-100 transition-all duration-200 text-center h-full border-gray-100 hover:border-gray-200">
-                <ArrowUp className="h-8 w-8 mx-auto mb-2 text-primary" />
-                <p className="font-handwritten font-bold text-gray-700">Withdraw</p>
-              </HandDrawnContainer>
-            </Link>
-            <Link to="/invest" className="w-full">
-              <HandDrawnContainer className="p-6 bg-gradient-to-br from-white to-gray-50 hover:from-gray-50 hover:to-gray-100 transition-all duration-200 text-center h-full border-gray-100 hover:border-gray-200">
-                <TrendingUp className="h-8 w-8 mx-auto mb-2 text-primary" />
-                <p className="font-handwritten font-bold text-gray-700">Invest</p>
-              </HandDrawnContainer>
-            </Link>
-            <Link to="/referral" className="w-full">
-              <HandDrawnContainer className="p-6 bg-gradient-to-br from-white to-gray-50 hover:from-gray-50 hover:to-gray-100 transition-all duration-200 text-center h-full border-gray-100 hover:border-gray-200">
-                <UserPlus className="h-8 w-8 mx-auto mb-2 text-primary" />
-                <p className="font-handwritten font-bold text-gray-700">Referral</p>
-              </HandDrawnContainer>
-            </Link>
-          </div>
+        {/* Trust Indicators */}
+        <TrustIndicators />
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-2 md:mb-3 px-1 sm:px-0">
-            <DashboardCard
-              title="Total Balance"
-              value={investmentsLoading || transactionsLoading ? "Loading..." : `$${stats.totalBalance.toLocaleString()}`}
-              icon={<DollarSign className="h-5 w-5" />}
-              trend={{ value: 0, isPositive: true }}
-            />
-            <DashboardCard
-              title="Active Investments"
-              value={investmentsLoading ? "Loading..." : stats.activeInvestments.toString()}
-              icon={<BarChart3 className="h-5 w-5" />}
-              trend={{ value: 0, isPositive: true }}
-            />
-            <DashboardCard
-              title="Total Earnings"
-              value={transactionsLoading ? "Loading..." : `$${stats.totalEarnings.toLocaleString()}`}
-              icon={<TrendingUp className="h-5 w-5" />}
-              trend={{ value: 0, isPositive: true }}
-            />
-            <DashboardCard
-              title="Next Payout"
-              value={investmentsLoading ? "Loading..." : stats.nextPayout}
-              icon={<ClockIcon className="h-5 w-5" />}
-            />
-          </div>
+        {/* Dashboard Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Portfolio Value</CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">$45,231</div>
+              <p className="text-xs text-muted-foreground">
+                +20.1% from last month
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Active Investments</CardTitle>
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">12</div>
+              <p className="text-xs text-muted-foreground">
+                +2 new this month
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Earnings</CardTitle>
+              <PieChart className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">$12,847</div>
+              <p className="text-xs text-muted-foreground">
+                +12% from last month
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Referral Earnings</CardTitle>
+              <CreditCard className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">$2,341</div>
+              <p className="text-xs text-muted-foreground">
+                +5% from last month
+              </p>
+            </CardContent>
+          </Card>
+        </div>
 
-          {/* Investments Section */}
-          <HandDrawnContainer className="mb-2 md:mb-3 mx-1 sm:mx-0">
-            <div className="flex justify-between items-center mb-3">
-              <h2 className="text-lg sm:text-xl font-bold">Your Investments</h2>
-              <Link to="/invest">
-                <HandDrawnButton variant="outline" size="sm">
-                  View All Plans
-                </HandDrawnButton>
-              </Link>
-            </div>
-
-            {investmentsLoading ? (
-              <div className="text-center py-8">Loading investments...</div>
-            ) : investments.length === 0 ? (
-              <div className="text-center py-8">
-                <p className="text-gray-600 mb-4">You don't have any investments yet.</p>
-                <Link to="/invest">
-                  <HandDrawnButton variant="primary">
-                    Start Investing
-                  </HandDrawnButton>
-                </Link>
-              </div>
-            ) : (
-              <div className="overflow-x-auto -mx-2 px-2">
-                <table className="min-w-full border-collapse">
-                  <thead>
-                    <tr className="bg-blue-50">
-                      <th className="border-2 border-black p-2 text-left">Plan</th>
-                      <th className="border-2 border-black p-2 text-left">Amount</th>
-                      {!isMobile && <th className="border-2 border-black p-2 text-left">Start Date</th>}
-                      <th className="border-2 border-black p-2 text-left">Next Payout</th>
-                      {!isMobile && <th className="border-2 border-black p-2 text-left">Return</th>}
-                      <th className="border-2 border-black p-2 text-left">Status</th>
-                      <th className="border-2 border-black p-2 text-left">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {investments.map((investment) => (
-                      <tr key={investment.id}>
-                        <td className="border-2 border-black p-2">
-                          {investment.plan_name || 'Unknown Plan'}
-                        </td>
-                        <td className="border-2 border-black p-2">
-                          ${Number(investment.amount || 0).toLocaleString()}
-                        </td>
-                        {!isMobile && (
-                          <td className="border-2 border-black p-2">
-                            {new Date(investment.created_at).toLocaleDateString()}
-                          </td>
-                        )}
-                        <td className="border-2 border-black p-2">
-                          {investment.status === 'Active' 
-                            ? (investment.end_date ? new Date(investment.end_date).toLocaleDateString() : 'TBD')
-                            : 'Completed'}
-                        </td>
-                        {!isMobile && (
-                          <td className="border-2 border-black p-2">
-                            {Number(investment.interest_rate || 0)}%
-                          </td>
-                        )}
-                        <td className="border-2 border-black p-2">
-                          <span 
-                            className={`inline-block px-2 py-1 rounded text-xs ${
-                              investment.status === 'Active' 
-                                ? 'bg-green-100 text-green-800' 
-                                : 'bg-gray-100 text-gray-800'
-                            }`}
-                          >
-                            {investment.status}
-                          </span>
-                        </td>
-                        <td className="border-2 border-black p-2">
-                          <HandDrawnButton variant="outline" size="sm">
-                            {isMobile ? 'View' : 'Details'}
-                          </HandDrawnButton>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </HandDrawnContainer>
-
-          {/* Transactions Section */}
-          <HandDrawnContainer className="mb-2 md:mb-3 mx-1 sm:mx-0">
-            <div className="flex justify-between items-center mb-3">
-              <h2 className="text-lg sm:text-xl font-bold">Recent Transactions</h2>
-              <HandDrawnButton variant="outline" size="sm">
-                View All
-              </HandDrawnButton>
-            </div>
-
-            {transactionsLoading ? (
-              <div className="text-center py-8">Loading transactions...</div>
-            ) : transactions.length === 0 ? (
-              <div className="text-center py-8">
-                <p className="text-gray-600 mb-4">You don't have any transactions yet.</p>
-                <Link to="/deposit">
-                  <HandDrawnButton variant="primary">
-                    Make Your First Deposit
-                  </HandDrawnButton>
-                </Link>
-              </div>
-            ) : (
-              <div className="space-y-2 md:space-y-3">
-                {transactions.slice(0, 4).map((transaction) => (
-                  <div key={transaction.id} className="border-2 border-black p-2 sm:p-3 rounded-lg flex justify-between items-center">
-                    <div className="flex items-center">
-                      <div className={`p-2 rounded-full mr-2 sm:mr-3 ${
-                        transaction.type === 'Deposit' || transaction.type === 'Payout'
-                          ? 'bg-green-100'
-                          : 'bg-red-100'
-                      }`}>
-                        {transaction.type === 'Deposit' || transaction.type === 'Payout' ? (
-                          <ArrowDown className={`h-4 w-4 sm:h-5 sm:w-5 ${
-                            transaction.type === 'Deposit' || transaction.type === 'Payout'
-                              ? 'text-green-600'
-                              : 'text-red-600'
-                          }`} />
-                        ) : (
-                          <ArrowUp className="h-4 w-4 sm:h-5 sm:w-5 text-red-600" />
-                        )}
-                      </div>
-                      <div>
-                        <p className="font-bold text-sm">{transaction.type}</p>
-                        <p className="text-xs text-gray-600">
-                          {new Date(transaction.created_at).toLocaleDateString()}
-                        </p>
-                      </div>
+        {/* Recent Activity */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Investments</CardTitle>
+              <CardDescription>Your latest investment activity</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {[
+                  { plan: 'Premium Plan', amount: '$5,000', date: '2 days ago', status: 'Active' },
+                  { plan: 'Growth Plan', amount: '$2,500', date: '1 week ago', status: 'Active' },
+                  { plan: 'Starter Plan', amount: '$1,000', date: '2 weeks ago', status: 'Completed' },
+                ].map((investment, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded">
+                    <div>
+                      <p className="font-medium">{investment.plan}</p>
+                      <p className="text-sm text-muted-foreground">{investment.date}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-sm">${Number(transaction.amount).toLocaleString()}</p>
-                      <p className={`text-xs ${
-                        transaction.status === 'Completed' 
-                          ? 'text-green-600' 
-                          : transaction.status === 'Pending'
-                          ? 'text-yellow-600'
-                          : 'text-red-600'
-                      }`}>
-                        {transaction.status}
-                      </p>
+                      <p className="font-medium">{investment.amount}</p>
+                      <Badge variant={investment.status === 'Active' ? 'default' : 'secondary'}>
+                        {investment.status}
+                      </Badge>
                     </div>
                   </div>
                 ))}
               </div>
-            )}
-          </HandDrawnContainer>
+            </CardContent>
+          </Card>
 
-          {/* Referral Section */}
-          <HandDrawnContainer className="bg-gradient-to-br from-white to-gray-50 border-gray-100 mx-1 sm:mx-0">
-            <div className="flex flex-col md:flex-row items-center justify-between">
-              <div className="mb-4 md:mb-0 md:mr-4 w-full md:w-auto">
-                <h2 className="text-lg sm:text-xl font-bold mb-2">Refer Friends & Earn</h2>
-                <p className="text-gray-600 mb-3 text-sm">
-                  Share your referral link and earn up to 5% commission on their investments.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-2 w-full">
-                  <input
-                    type="text"
-                    value={`https://investpro.com/ref/${user?.id?.substring(0, 8)}`}
-                    readOnly
-                    className="hand-drawn-input flex-grow text-sm truncate"
-                  />
-                  <Link to="/referral">
-                    <HandDrawnButton variant="primary">
-                      Referral Program
-                    </HandDrawnButton>
-                  </Link>
+          <Card>
+            <CardHeader>
+              <CardTitle>Performance Overview</CardTitle>
+              <CardDescription>Your investment performance this month</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">ROI</span>
+                  <span className="font-medium text-green-600">+24.5%</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Total Profit</span>
+                  <span className="font-medium">$12,847</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Next Payout</span>
+                  <span className="font-medium">In 3 days</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Referral Bonus</span>
+                  <span className="font-medium text-blue-600">$2,341</span>
                 </div>
               </div>
-              <div className="text-center md:text-right w-full md:w-auto">
-                <div className="inline-block md:block mb-3 md:mb-2 mr-4 md:mr-0">
-                  <p className="text-xs text-gray-600">Your Referrals</p>
-                  <p className="text-xl font-bold">
-                    {referralsLoading ? "Loading..." : stats.referralCount}
-                  </p>
-                </div>
-                <div className="inline-block md:block">
-                  <p className="text-xs text-gray-600">Earned Commission</p>
-                  <p className="text-xl font-bold">
-                    {transactionsLoading ? "Loading..." : `$${stats.referralEarnings.toLocaleString()}`}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </HandDrawnContainer>
+            </CardContent>
+          </Card>
         </div>
-      </main>
 
-      <Footer />
+        {/* Live Activity Feed */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <ActivityFeed />
+          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-primary" />
+                Quick Actions
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Button 
+                onClick={() => navigate('/invest')} 
+                className="w-full"
+                size="lg"
+              >
+                <DollarSign className="h-4 w-4 mr-2" />
+                New Investment
+              </Button>
+              <Button 
+                onClick={() => navigate('/deposit')} 
+                variant="outline" 
+                className="w-full"
+                size="lg"
+              >
+                <ArrowUpRight className="h-4 w-4 mr-2" />
+                Make Deposit
+              </Button>
+              <Button 
+                onClick={() => navigate('/withdraw')} 
+                variant="outline" 
+                className="w-full"
+                size="lg"
+              >
+                <ArrowDownRight className="h-4 w-4 mr-2" />
+                Withdraw Funds
+              </Button>
+              <Button 
+                onClick={() => navigate('/referral')} 
+                variant="outline" 
+                className="w-full"
+                size="lg"
+              >
+                <PieChart className="h-4 w-4 mr-2" />
+                Referral Program
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };
