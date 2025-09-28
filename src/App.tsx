@@ -13,6 +13,9 @@ import Admin from "./pages/Admin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminContentManager from "./pages/AdminContentManager";
 import InvestmentPlans from "./pages/InvestmentPlans";
+import About from "./pages/About";
+import Features from "./pages/Features";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Deposit from "./pages/Deposit";
 import Withdraw from "./pages/Withdraw";
@@ -66,6 +69,9 @@ const App = () => (
               } 
             />
             <Route path="/plans" element={<InvestmentPlans />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/features" element={<Features />} />
+            <Route path="/contact" element={<Contact />} />
             <Route 
               path="/deposit" 
               element={

@@ -12,10 +12,12 @@ const Navbar = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  // Remove Dashboard from public navigation
   const navItems = [
     { name: 'Home', path: '/' },
-    { name: 'Investment Plans', path: '/plans' },
+    { name: 'Plans', path: '/plans' },
+    { name: 'Features', path: '/features' },
+    { name: 'About', path: '/about' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   return (

@@ -80,104 +80,53 @@ const Index = () => {
           </div>
         </section>
       
-      {/* Trust Indicators Section */}
-      <section className="py-12 bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Trusted by Investors Worldwide
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
-              Real-time platform statistics and security indicators
-            </p>
+        {/* Trust Indicators Section */}
+        <section className="py-12 bg-gray-50 dark:bg-gray-900">
+          <div className="container mx-auto px-4">
+            <TrustIndicators />
           </div>
-          <TrustIndicators />
-        </div>
-      </section>
+        </section>
 
-      {/* Live Activity Section */}
-      <section className="py-16 bg-white dark:bg-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-                Platform Activity
-              </h2>
-              <ActivityFeed />
-            </div>
-            <div className="space-y-6">
-              <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg p-6 border border-primary/20">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                  Why Choose Us?
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <Shield className="h-5 w-5 text-green-600" />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">Bank-level security</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <TrendingUp className="h-5 w-5 text-blue-600" />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">Guaranteed returns</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Users className="h-5 w-5 text-purple-600" />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">24/7 support</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Globe className="h-5 w-5 text-indigo-600" />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">Global presence</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg p-6 border border-green-200 dark:border-green-800">
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">
-                  🎉 Special Offer
-                </h3>
-                <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
-                  Get 20% bonus on your first investment of $1000 or more!
-                </p>
-                <div className="text-xs text-green-600 dark:text-green-400 font-medium">
-                  ⏰ Limited time offer
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-        <section className="py-16 bg-gray-50">
+        {/* Quick Features Overview */}
+        <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <span className="font-handwritten text-lg text-blue-600 bg-blue-100 px-4 py-1 rounded-full inline-block mb-4">Why Choose Us</span>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Features Designed for Smart Investors</h2>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Smart Investment Made Simple</h2>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Our platform combines security, transparency, and high returns to provide you with the best investment experience across traditional and alternative assets.
+                Join thousands of investors who trust our platform for secure, high-yield opportunities.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               <FeatureCard
-                title="High Security"
-                description="Advanced encryption and multi-factor authentication to keep your assets safe"
+                title="Bank-Level Security"
+                description="Advanced encryption and multi-factor authentication"
                 icon={<Shield className="h-6 w-6" />}
               />
               <FeatureCard
-                title="Fast Returns"
-                description="Quick investment cycles with competitive interest rates and timely payouts"
+                title="Fast Processing"
+                description="Quick deposits and withdrawal processing"
                 icon={<Zap className="h-6 w-6" />}
               />
               <FeatureCard
-                title="Advanced Analytics"
-                description="Track your investments with detailed charts and performance metrics"
+                title="Real-Time Analytics"
+                description="Track performance with detailed insights"
                 icon={<BarChart3 className="h-6 w-6" />}
               />
               <FeatureCard
-                title="Multiple Coins"
-                description="Invest in stocks, bonds, real estate, and commodities through our diversified plans"
+                title="Multiple Assets"
+                description="Diversified investment opportunities"
                 icon={<Coins className="h-6 w-6" />}
               />
+            </div>
+            
+            <div className="text-center mt-12">
+              <Link to="/features">
+                <HandDrawnButton variant="outline">
+                  View All Features <ChevronRight className="ml-1 inline-block h-4 w-4" />
+                </HandDrawnButton>
+              </Link>
             </div>
           </div>
         </section>
