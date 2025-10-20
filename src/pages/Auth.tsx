@@ -7,12 +7,15 @@ import HandDrawnContainer from '@/components/ui/HandDrawnContainer';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useAuth } from '@/context/AuthContext';
+import { loginSchema, signupSchema } from '@/lib/validation';
+import { useToast } from '@/hooks/use-toast';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const { signIn, signUp, user, isLoading } = useAuth();
+  const { toast } = useToast();
   
   const [formData, setFormData] = useState({
     name: '',
@@ -21,23 +24,40 @@ const Auth = () => {
     confirmPassword: '',
   });
   
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
   
   const validateForm = () => {
-    if (!formData.email || !formData.password) {
+    setErrors({});
+    
+    try {
+      if (isLogin) {
+        loginSchema.parse({ email: formData.email, password: formData.password });
+      } else {
+        signupSchema.parse(formData);
+        if (!agreeTerms) {
+          setErrors({ terms: 'You must agree to the terms and conditions' });
+          return false;
+        }
+      }
+      return true;
+    } catch (error: any) {
+      const fieldErrors: Record<string, string> = {};
+      error.errors?.forEach((err: any) => {
+        const field = err.path[0];
+        fieldErrors[field] = err.message;
+      });
+      setErrors(fieldErrors);
       return false;
     }
-    
-    if (!isLogin) {
-      if (!formData.name || !agreeTerms || formData.password !== formData.confirmPassword) {
-        return false;
-      }
-    }
-    
-    return true;
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
@@ -86,6 +106,7 @@ const Auth = () => {
                     className="hand-drawn-input w-full"
                     required
                   />
+                  {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                 </div>
               )}
 
@@ -100,6 +121,7 @@ const Auth = () => {
                   className="hand-drawn-input w-full"
                   required
                 />
+                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
               </div>
 
               <div className="mb-4">
@@ -122,6 +144,7 @@ const Auth = () => {
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
+                {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
               </div>
 
               {!isLogin && (
@@ -137,6 +160,7 @@ const Auth = () => {
                       className="hand-drawn-input w-full"
                       required
                     />
+                    {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
                   </div>
 
                   <div className="mb-6">
@@ -152,6 +176,7 @@ const Auth = () => {
                         I agree to the <a href="#" className="text-blue-600 hover:underline">Terms of Service</a> and <a href="#" className="text-blue-600 hover:underline">Privacy Policy</a>
                       </span>
                     </label>
+                    {errors.terms && <p className="text-red-500 text-sm mt-1">{errors.terms}</p>}
                   </div>
                 </>
               )}
@@ -160,7 +185,6 @@ const Auth = () => {
                 type="submit"
                 variant="primary"
                 className="w-full mb-4"
-                disabled={!validateForm()}
               >
                 {isLogin ? (
                   <><LogIn size={18} className="mr-2" /> Sign In</>

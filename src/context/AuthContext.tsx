@@ -85,14 +85,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error, data } = await supabase.auth.signInWithPassword({ email, password });
       
       if (error) {
-        toast({
-          title: 'Login failed',
-          description: error.message,
-          variant: 'destructive',
-        });
+        // Handle specific error cases
+        if (error.message.includes('Invalid login credentials')) {
+          toast({
+            title: 'Login failed',
+            description: 'Invalid email or password. Please try again.',
+            variant: 'destructive',
+          });
+        } else if (error.message.includes('Email not confirmed')) {
+          toast({
+            title: 'Email not verified',
+            description: 'Please check your email and verify your account first.',
+            variant: 'destructive',
+          });
+        } else {
+          toast({
+            title: 'Login failed',
+            description: error.message,
+            variant: 'destructive',
+          });
+        }
         throw error;
       }
       
@@ -102,9 +117,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       
       // Check if user is admin and redirect accordingly
-      const currentSession = await supabase.auth.getSession();
-      if (currentSession.data.session?.user) {
-        const hasAdminRole = await checkUserRole(currentSession.data.session.user.id, 'admin');
+      if (data.user) {
+        const hasAdminRole = await checkUserRole(data.user.id, 'admin');
         if (hasAdminRole) {
           navigate('/admin-dashboard');
         } else {
@@ -112,16 +126,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       }
     } catch (error: any) {
-      console.error('Error signing in:', error);
+      // Error already logged above
     }
   };
 
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
-      const { error } = await supabase.auth.signUp({
+      const redirectUrl = `${window.location.origin}/dashboard`;
+      
+      const { error, data } = await supabase.auth.signUp({
         email,
         password,
         options: {
+          emailRedirectTo: redirectUrl,
           data: {
             full_name: fullName,
           },
@@ -129,20 +146,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       
       if (error) {
-        toast({
-          title: 'Registration failed',
-          description: error.message,
-          variant: 'destructive',
-        });
+        // Handle specific error cases
+        if (error.message.includes('already registered')) {
+          toast({
+            title: 'Account already exists',
+            description: 'This email is already registered. Please sign in instead.',
+            variant: 'destructive',
+          });
+        } else {
+          toast({
+            title: 'Registration failed',
+            description: error.message,
+            variant: 'destructive',
+          });
+        }
         throw error;
       }
       
       toast({
-        title: 'Account created',
-        description: 'Your account has been created successfully',
+        title: 'Account created successfully!',
+        description: 'Please check your email to verify your account.',
       });
       
-      navigate('/dashboard');
+      // Only navigate if user is immediately available (auto-confirm enabled)
+      if (data.user) {
+        navigate('/dashboard');
+      }
     } catch (error: any) {
       console.error('Error signing up:', error);
     }
