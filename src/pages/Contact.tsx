@@ -260,10 +260,9 @@ const Contact = () => {
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Headquarters</h3>
                     <p className="text-gray-600">
-                      123 Investment Plaza<br />
-                      Financial District<br />
-                      New York, NY 10004<br />
-                      United States
+                      Arch. Makariou III Avenue<br />
+                      Limassol 3025<br />
+                      Cyprus
                     </p>
                   </div>
                 </div>
