@@ -61,8 +61,7 @@ export const createTransaction = async (transactionData: {
     .from('transactions')
     .insert({
       ...transactionData,
-      status: 'Pending',
-      currency: 'USD'
+      status: 'Pending'
     })
     .select()
     .single();
