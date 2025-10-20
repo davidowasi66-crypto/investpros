@@ -21,7 +21,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="py-4 border-b-2 border-black bg-white sticky top-0 z-50">
+    <nav className="py-4 border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
       <div className="container px-4 mx-auto">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center">
@@ -37,13 +37,13 @@ const Navbar = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`font-handwritten text-lg transition duration-200 ease-in-out relative group ${
-                    isActive(item.path) ? 'font-bold text-blue-600' : 'text-gray-700 hover:text-blue-600'
+                  className={`font-handwritten text-lg transition-all duration-300 ease-out relative group ${
+                    isActive(item.path) ? 'font-bold gradient-text' : 'text-foreground/80 hover:text-primary'
                   }`}
                 >
                   {item.name}
                   <span 
-                    className={`absolute bottom-0 left-0 w-full h-1 bg-blue-500 transform origin-left transition-transform duration-300 ${
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-secondary transform origin-left transition-transform duration-300 ${
                       isActive(item.path) ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
                     }`}>
                   </span>
@@ -101,16 +101,16 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="mt-4 md:hidden animate-fade-in">
+          <div className="mt-4 md:hidden animate-slide-in-right bg-card/95 backdrop-blur-md rounded-lg p-4 border border-border shadow-lg">
             <div className="flex flex-col space-y-4 py-4">
               {navItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`font-handwritten text-lg px-2 py-1 ${
+                  className={`font-handwritten text-lg px-2 py-1 transition-all duration-200 ${
                     isActive(item.path) 
-                      ? 'font-bold text-blue-600 border-l-4 border-blue-600 pl-2' 
-                      : 'text-gray-700'
+                      ? 'font-bold gradient-text border-l-4 border-primary pl-2' 
+                      : 'text-foreground/80 hover:text-primary'
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >

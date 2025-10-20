@@ -18,15 +18,16 @@
 
     --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
+    --primary-glow: 221.2 83.2% 65%;
 
-    --secondary: 210 40% 98%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 280 100% 70%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 98%;
+    --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 98%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 280 100% 70%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -36,6 +37,14 @@
     --ring: 221.2 83.2% 53.3%;
 
     --radius: 1rem;
+
+    --gradient-primary: linear-gradient(135deg, hsl(221.2 83.2% 53.3%) 0%, hsl(280 100% 70%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 40% 98%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(221.2 83.2% 97%) 0%, hsl(280 100% 97%) 100%);
+    
+    --shadow-elegant: 0 10px 30px -10px hsl(221.2 83.2% 53.3% / 0.3);
+    --shadow-glow: 0 0 40px hsl(221.2 83.2% 65% / 0.4);
+    --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -57,17 +66,18 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 100% 50%;
+    --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 47.4% 11.2%;
+    --primary-glow: 217.2 91.2% 70%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 280 100% 70%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 210 100% 60%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 280 100% 70%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
@@ -75,6 +85,15 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(217.2 91.2% 59.8%) 0%, hsl(280 100% 70%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(222.2 84% 4.9%) 0%, hsl(217.2 32.6% 17.5%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(222.2 84% 10%) 0%, hsl(280 100% 15%) 100%);
+    
+    --shadow-elegant: 0 10px 30px -10px hsl(217.2 91.2% 59.8% / 0.3);
+    --shadow-glow: 0 0 40px hsl(217.2 91.2% 70% / 0.4);
+    --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -93,12 +112,12 @@
 
   body {
     @apply bg-background text-foreground font-sans;
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    /* Enhanced cross-browser support */
+    background: var(--gradient-subtle);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -108,89 +127,107 @@
 
 @layer components {
   .hand-drawn-container {
-    @apply relative border border-gray-200 rounded-xl p-3 sm:p-6 shadow-sm bg-white;
+    @apply relative border border-gray-200 rounded-xl p-3 sm:p-6 bg-white dark:bg-card dark:border-border;
     border-radius: 12px;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    /* Enhanced mobile touch target */
+    box-shadow: var(--shadow-card);
     min-height: 44px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .hand-drawn-container:hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transform: translateY(-2px);
-    transition: all 0.2s ease-in-out;
+    box-shadow: var(--shadow-elegant);
+    transform: translateY(-4px);
   }
 
   .hand-drawn-btn {
-    @apply relative inline-flex items-center justify-center px-4 sm:px-6 py-3 font-handwritten font-bold text-black bg-white border-2 border-black rounded-md overflow-hidden transition-transform duration-200 ease-in-out hover:translate-y-[-3px];
-    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
-    /* Enhanced mobile touch target */
+    @apply relative inline-flex items-center justify-center px-4 sm:px-6 py-3 font-handwritten font-bold rounded-lg overflow-hidden transition-all duration-300 ease-out;
     min-height: 44px;
     min-width: 44px;
-    /* Cross-browser button reset */
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    border-style: solid;
     cursor: pointer;
     user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+
+  .hand-drawn-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-elegant);
   }
 
   .hand-drawn-btn:active {
-    @apply translate-y-[0px];
-    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+    transform: translateY(0);
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   }
 
   .hand-drawn-btn.primary {
-    @apply bg-blue-500 text-white;
+    background: var(--gradient-primary);
+    @apply text-white border-0;
+  }
+
+  .hand-drawn-btn.primary:hover {
+    box-shadow: var(--shadow-glow);
   }
 
   .hand-drawn-input {
-    @apply relative border-2 border-black rounded-md px-3 sm:px-4 py-2 bg-white text-base;
-    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
-    /* Enhanced mobile input */
+    @apply relative border-2 border-input rounded-lg px-3 sm:px-4 py-2 bg-background dark:bg-card text-foreground;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     min-height: 44px;
-    /* Cross-browser input reset */
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    font-size: 16px; /* Prevents zoom on iOS */
+    font-size: 16px;
+    transition: all 0.2s ease-out;
+  }
+
+  .hand-drawn-input:focus {
+    @apply border-primary ring-2 ring-primary/20;
+    outline: none;
   }
 
   .hand-drawn-card {
-    @apply relative border border-gray-200 rounded-xl p-6 bg-white transition-all duration-300 hover:translate-y-[-2px];
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    @apply relative border border-border rounded-xl p-6 bg-card transition-all duration-300;
+    box-shadow: var(--shadow-card);
   }
   
   .hand-drawn-card:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-elegant);
+    transform: translateY(-4px) scale(1.02);
   }
 
   .investment-bg {
     background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2374b9ff' fill-opacity='0.1' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
   }
 
-  /* Cross-browser compatibility utilities */
+  .gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
   .scroll-smooth {
     scroll-behavior: smooth;
   }
 
-  /* Enhanced touch targets for mobile */
   .touch-target {
     min-height: 44px;
     min-width: 44px;
   }
 
-  /* Better focus states for accessibility */
   .focus-visible {
     outline: 2px solid hsl(var(--primary));
     outline-offset: 2px;
   }
 
-  /* Improved table responsiveness */
   .responsive-table {
     display: block;
     width: 100%;
@@ -198,7 +235,15 @@
     white-space: nowrap;
   }
 
-  /* Enhanced mobile typography */
+  .hover-lift {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-elegant);
+  }
+
   @media (max-width: 768px) {
     .mobile-text-base {
       font-size: 16px;
